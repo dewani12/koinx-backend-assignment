@@ -3,21 +3,22 @@ import mongoose, { Schema } from "mongoose"
 const statsSchema = new Schema({
     name: {
         type: String,
-        required: true,
-        lowercase: true,
-        enum: ["bitcoin", "ethereum", "matic-network"]
+        required: true
     },
     usd_price: {
         type: Number,
-        required: true,
-        min: 0
-    },
-    usd_marketCap: {
-        type: String,
         required: true
     },
-    usd_24h_change: {
-        type: Schema.Types.Decimal128,
+    usd_marketcap: {
+        type: Number,
+        required: true
+    },
+    usd_price_change_24h: {
+        type: Number,
+        required: true
+    },
+    latestUpdatedAt: {
+        type: Date,
         required: true
     }
 })

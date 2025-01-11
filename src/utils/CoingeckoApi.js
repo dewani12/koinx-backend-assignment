@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { COINGECKO_BASEURL } from '../constants.js'
 import Stats from '../models/stats.model.js'
-import PriceRecord from '../models/priceRecord.model.js'
 
 const fetchCryptoPrices = async (cryptoIds = ["bitcoin", "ethereum", "matic-network"]) => {
     try {
@@ -18,28 +17,14 @@ const fetchCryptoPrices = async (cryptoIds = ["bitcoin", "ethereum", "matic-netw
         for (const cryptoId of cryptoIds) {
             const data = response.data[cryptoId]
             if (data) {
-                await Stats.findOneAndUpdate(
-                    {
-                        name: cryptoId
-                    },
-                    {
-                        usd_price: data.usd,
-                        usd_marketCap: data.usd_market_cap.toString(),
-                        usd_24h_change: data.usd_24h_change
-                    },
-                    {
-                        new: true,
-                        upsert: true,
-                        // runValidators: true
-                    }
-                )
-                console.log(`Updated stats for ${cryptoId}`)
-                const priceRecord = new PriceRecord({
+                const newstats = new Stats({
                     name: cryptoId,
-                    usd_price: data.usd
-                })
-                await priceRecord.save()
-                console.log(`Price record for ${cryptoId} saved`)
+                    usd_price: data.usd,
+                    usd_marketcap: data.usd_market_cap,
+                    usd_price_change_24h: data.usd_24h_change,
+                    latestUpdatedAt: new Date()
+                });
+                await newstats.save();
             }
         }
     } catch (error) {
