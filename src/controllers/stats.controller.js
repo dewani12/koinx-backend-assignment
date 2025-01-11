@@ -9,7 +9,7 @@ const getStats = async (req, res) => {
         throw new ApiError(400, "Id parameter is missing")
     }
 
-    const cryptoDetails = await Stats.findOne({ name: id })
+    const cryptoDetails = await Stats.findOne({ name: id });
 
     if (!cryptoDetails) {
         throw new ApiError(404, "CryptoCurrency not found")
@@ -17,7 +17,12 @@ const getStats = async (req, res) => {
 
     return res
         .status(200)
-        .json(new ApiResponse(200, "Crypto data fetched successfully", cryptoDetails))
+        .json({
+            name: cryptoDetails.name,
+            usd_price: cryptoDetails.usd_price,
+            usd_market_cap: cryptoDetails.usd_marketcap,
+            usd_24h_change: cryptoDetails.usd_price_change_24h
+        });
 }
 
 const getDeviation = async (req, res) => {
@@ -50,10 +55,10 @@ const getDeviation = async (req, res) => {
 
         return res
             .status(200)
-            .json(new ApiResponse(200, "Deviation calculated successfully",
+            .json(
                 {
                     deviation: standardDeviation.toFixed(2)
-                }))
+                });
     } catch (error) {
         throw new ApiError(500, error.message || "Internal Server Error")
     }
