@@ -18,7 +18,6 @@ const getStats = async (req, res) => {
     return res
         .status(200)
         .json({
-            name: cryptoDetails.name,
             usd_price: cryptoDetails.usd_price,
             usd_market_cap: cryptoDetails.usd_marketcap,
             usd_24h_change: cryptoDetails.usd_price_change_24h
