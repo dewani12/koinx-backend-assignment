@@ -1,6 +1,5 @@
 import Stats from '../models/stats.model.js'
 import ApiError from '../utils/ApiError.js'
-import ApiResponse from '../utils/ApiResponse.js'
 
 const getStats = async (req, res) => {
     const { id } = req.params
